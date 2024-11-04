@@ -2,83 +2,80 @@
 # -*- coding: utf-8 -*-
 
 import random
+from typing import List
 
 
 class IllegalRowValue(Exception):
-    def __init__(self, row, message="Illegall count of Row"):
+    def __init__(self, row: int, message: str = "Illegal count of Row") -> None:
         self.row = row
         self.message = message
-        super(IllegalRowValue, self).__init__(message)
+        super().__init__(message)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.row} -> {self.message}"
 
 
-class IllegalColValue:
-    def __init__(self, col, message="Illegall count of Col"):
+class IllegalColValue(Exception):  # Наследование от Exception
+    def __init__(self, col: int, message: str = "Illegal count of Col") -> None:
         self.col = col
         self.message = message
-        super(IllegalColValue, self).__init__(message)
+        super().__init__(message)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.col} -> {self.message}"
 
 
-class IllegalStartValue:
-    def __init__(self, start, message="Illegall start value"):
+class IllegalStartValue(Exception):  # Наследование от Exception
+    def __init__(self, start: int, message: str = "Illegal start value") -> None:
         self.start = start
         self.message = message
-        super(IllegalStartValue, self).__init__(message)
+        super().__init__(message)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.start} -> {self.message}"
 
 
-class IllegalEndValue:
-    def __init__(self, end, message="Illegall end value"):
+class IllegalEndValue(Exception):  # Наследование от Exception
+    def __init__(self, end: int, message: str = "Illegal end value") -> None:
         self.end = end
         self.message = message
-        super(IllegalEndValue, self).__init__(message)
+        super().__init__(message)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.end} -> {self.message}"
 
 
-class Randommatrix:
-    def __init__(self, col, row, start, end):
+class RandomMatrix:
+    def __init__(self, col: int, row: int, start: int, end: int) -> None:
         self.col = col
         self.row = row
         self.start = start
         self.end = end
+        self.matrix: List[List[int]] = []
 
-    def generate_matrix(self):
-        if self.row == 0:
+    def generate_matrix(self) -> List[List[int]]:
+        if self.row <= 0:
             raise IllegalRowValue(self.row)
 
-        if self.col == 0:
+        if self.col <= 0:
             raise IllegalColValue(self.col)
 
-        result = []
+        result: List[List[int]] = []
 
-        for i in range(self.row):
-            result.append([])
-
-        for i in result:
-            counter = 0
-            while counter != self.col:
-                i.append(random.randint(self.start, self.end))
-                counter += 1
+        for _ in range(self.row):
+            row_values = [random.randint(self.start, self.end) for _ in range(self.col)]
+            result.append(row_values)
 
         self.matrix = result
         return result
 
-    def show_matrix(self):
-        for i in self.matrix:
-            print(i)
+    def show_matrix(self) -> None:
+        for row in self.matrix:
+            print(row)
 
 
-def main():
-    matrix = Randommatrix(5, 4, 1, 5)
+def main() -> None:
+    matrix = RandomMatrix(5, 4, 1, 5)
     matrix.generate_matrix()
     matrix.show_matrix()
 
